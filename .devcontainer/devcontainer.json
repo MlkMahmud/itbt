@@ -10,7 +10,7 @@
         "files.autoSaveDelay": 1000,
         "go.useLanguageServer": true
       },
-      "extensions": ["golang.go", "streetsidesoftware.code-spell-checker"]
+      "extensions": ["golang.go", "redhat.vscode-yaml", "streetsidesoftware.code-spell-checker"]
     }
   }
 }
