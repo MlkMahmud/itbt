@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -21,7 +20,12 @@ func main() {
 			{
 				Name: "check",
 				Action: func(ctx *cli.Context) error {
-					fmt.Println("bucket is taken :(")
+					bucketName := ctx.String("bucket-name")
+
+					if err := validateBucketName(bucketName); err != nil {
+						return err
+					}
+
 					return nil
 				},
 				Flags: []cli.Flag{
@@ -50,9 +54,9 @@ func main() {
 				Usage: "check if an AWS S3 bucket name is taken",
 			},
 		},
-		Description: "A command line utility for checking if an AWS S3 bucket name is taken and generating available bucket names.",
+		Description: "A command line utility for checking if an AWS S3 bucket name is taken.",
 		HelpName:    "itbt",
-		Usage:       "check if an AWS S3 bucket name is taken and generate available bucket names",
+		Usage:       "check if an AWS S3 bucket name is taken",
 	}
 
 	if err := app.Run(os.Args); err != nil {
