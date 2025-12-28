@@ -9,39 +9,39 @@ import (
 func Test_validateBucketName(t *testing.T) {
 	inputs := map[string]error{
 		// length checks
-		"ab": errBucketNameLen,
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa": errBucketNameLen, // 64 chars
+		"ab": errInvalidLen,
+		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa": errInvalidLen, // 64 chars
 
 		// IP address format
-		"192.168.0.1": errBucketNameFormat,
+		"192.168.0.1": errInvalidFormat,
 
 		// adjacent periods
-		"my..bucket": errBucketNameAdjacentPeriods,
+		"my..bucket": errAdjacentPeriods,
 
 		// invalid characters (uppercase, underscore, spaces, etc.)
-		"my_Bucket":       errBucketNameInvalidCharacter,
-		"Mybucket":        errBucketNameInvalidCharacter,
-		"name with space": errBucketNameInvalidCharacter,
+		"my_Bucket":       errInvalidCharacter,
+		"Mybucket":        errInvalidCharacter,
+		"name with space": errInvalidCharacter,
 
 		// invalid first character
-		"-bucket": errBucketNameInvalidFirstCharacter,
-		".bucket": errBucketNameInvalidFirstCharacter,
+		"-bucket": errInvalidFirstCharacter,
+		".bucket": errInvalidFirstCharacter,
 
 		// invalid last character
-		"bucket-": errBucketNameInvalidLastCharacter,
-		"bucket.": errBucketNameInvalidLastCharacter,
+		"bucket-": errInvalidLastCharacter,
+		"bucket.": errInvalidLastCharacter,
 
 		// prohibited prefixes
-		"xn--example":      errBucketNameInvalidPrefix,
-		"sthree-test":      errBucketNameInvalidPrefix,
-		"amzn-s3-demo-foo": errBucketNameInvalidPrefix,
+		"xn--example":      errInvalidPrefix,
+		"sthree-test":      errInvalidPrefix,
+		"amzn-s3-demo-foo": errInvalidPrefix,
 
 		// prohibited suffixes
-		"good-suffix-s3alias": errBucketNameInvalidSuffix,
-		"name--ol-s3":         errBucketNameInvalidSuffix,
-		"name.mrap":           errBucketNameInvalidSuffix,
-		"name--x-s3":          errBucketNameInvalidSuffix,
-		"name--table-s3":      errBucketNameInvalidSuffix,
+		"good-suffix-s3alias": errInvalidSuffix,
+		"name--ol-s3":         errInvalidSuffix,
+		"name.mrap":           errInvalidSuffix,
+		"name--x-s3":          errInvalidSuffix,
+		"name--table-s3":      errInvalidSuffix,
 
 		// valid names
 		"abc":       nil,
