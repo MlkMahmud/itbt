@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -20,21 +21,28 @@ func main() {
 			{
 				Name: "check",
 				Action: func(ctx *cli.Context) error {
-					bucketName := ctx.String("bucket-name")
+					bucketName := ctx.Args().First()
 
 					if err := validateBucketName(bucketName); err != nil {
 						return err
 					}
 
+					bucketIsAvailable, err := checkBucketName(bucketName)
+
+					if err != nil {
+						return err
+					}
+
+					if bucketIsAvailable {
+						fmt.Println("bucket name is not taken")
+					} else {
+						fmt.Println("bucket name is taken")
+					}
+
 					return nil
 				},
+				Args: true,
 				Flags: []cli.Flag{
-					&cli.StringFlag{
-						Name:     "bucket-name",
-						Aliases:  []string{"b"},
-						Required: true,
-						Usage:    "the name of the AWS S3 bucket to check (must be a valid S3 bucket name: 3-63 characters, lowercase letters, numbers, dots and hyphens; must start and end with a letter or number)",
-					},
 					&cli.BoolFlag{
 						Name:     "generate-suggestions",
 						Aliases:  []string{"g"},
@@ -51,12 +59,15 @@ func main() {
 						Base:     10,
 					},
 				},
-				Usage: "check if an AWS S3 bucket name is taken",
+				Usage: "checks if an AWS S3 bucket name is taken",
+				UsageText: `itbt check bucket_name [command options]
+
+bucket_name:	the name of the AWS S3 bucket to check (must be a valid S3 bucket name: 3-63 characters, lowercase letters, numbers, dots and hyphens; must start and end with a letter or number)`,
 			},
 		},
-		Description: "A command line utility for checking if an AWS S3 bucket name is taken.",
+		Description: "Is This Bucket Taken (itbt) is a small command-line utility for validating AWS S3 bucket names and checking whether a given bucket name is already registered. When a name is taken, the tool can optionally generate suggested available alternatives to help you quickly find an acceptable name. Designed for interactive use, scripting, and pre-deployment checks.",
 		HelpName:    "itbt",
-		Usage:       "check if an AWS S3 bucket name is taken",
+		Usage:       "A command line utility for checking if an AWS S3 bucket name is taken.",
 	}
 
 	if err := app.Run(os.Args); err != nil {
