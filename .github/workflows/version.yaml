@@ -19,4 +19,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MAJOR_STRING_TOKEN: "BREAKING CHANGE"
           MINOR_STRING_TOKEN: "^feat"
-          TAG_PREFIX: true
+          TAG_PREFIX: v
