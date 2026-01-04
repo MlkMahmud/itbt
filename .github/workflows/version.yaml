@@ -1,0 +1,22 @@
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  bump_version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.75.0
+        env:
+          DEFAULT_BUMP: patch
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MAJOR_STRING_TOKEN: "BREAKING CHANGE"
+          MINOR_STRING_TOKEN: "^feat"
+          TAG_PREFIX: true
