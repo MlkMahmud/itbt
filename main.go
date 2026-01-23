@@ -8,6 +8,11 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+var (
+	date    = "unknown"
+	version = "dev"
+)
+
 func main() {
 	app := &cli.App{
 		Name: "Is This Bucket Taken",
@@ -38,7 +43,7 @@ func main() {
 				Email: "almalikmahmud@gmail.com",
 			},
 		},
-		Args: true,
+		Args:        true,
 		Description: "Is This Bucket Taken (itbt) is a small command-line utility for validating AWS S3 bucket names and checking whether a given bucket name is already registered. When a name is taken, the tool can optionally generate suggested available alternatives to help you quickly find an acceptable name. Designed for interactive use, scripting, and pre-deployment checks.",
 		Flags: []cli.Flag{
 			&cli.BoolFlag{
@@ -62,6 +67,7 @@ func main() {
 		UsageText: `itbt bucket_name [global options]
 
 bucket_name:	the name of the AWS S3 bucket to check (must be a valid S3 bucket name: 3-63 characters, lowercase letters, numbers, dots and hyphens; must start and end with a letter or number)`,
+		Version: version,
 	}
 
 	if err := app.Run(os.Args); err != nil {
