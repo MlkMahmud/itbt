@@ -1,23 +1,26 @@
 on:
-  push:
-    branches: 
-      - main
+  workflow_dispatch:
 
 jobs:
-  bump_version:
-    runs-on: ubuntu-latest
+  release:
+    runs-on: ubuntu-24.04
     permissions:
       contents: write
+      packages: write
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@1.75.0
+      - name: Set up Go
+        uses: actions/setup-go@v5
+
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          distribution: goreleaser
+          version: "~> v2"
+          args: release --clean
         env:
-          DEFAULT_BUMP: patch
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MAJOR_STRING_TOKEN: "BREAKING CHANGE"
-          MINOR_STRING_TOKEN: "^feat"
-          TAG_PREFIX: v
